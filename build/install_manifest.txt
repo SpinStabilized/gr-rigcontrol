@@ -1,0 +1,9 @@
+/usr/local/lib/cmake/rigcontrol/rigcontrolConfig.cmake
+/usr/local/include/rigcontrol/api.h
+/usr/local/lib/python2.7/dist-packages/rigcontrol/__init__.py
+/usr/local/lib/python2.7/dist-packages/rigcontrol/rigcontrol.py
+/usr/local/lib/python2.7/dist-packages/rigcontrol/__init__.pyc
+/usr/local/lib/python2.7/dist-packages/rigcontrol/rigcontrol.pyc
+/usr/local/lib/python2.7/dist-packages/rigcontrol/__init__.pyo
+/usr/local/lib/python2.7/dist-packages/rigcontrol/rigcontrol.pyo
+/usr/local/share/gnuradio/grc/blocks/rigcontrol_rigcontrol.xml

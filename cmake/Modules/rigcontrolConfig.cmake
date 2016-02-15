@@ -1,0 +1,30 @@
+INCLUDE(FindPkgConfig)
+PKG_CHECK_MODULES(PC_RIGCONTROL rigcontrol)
+
+FIND_PATH(
+    RIGCONTROL_INCLUDE_DIRS
+    NAMES rigcontrol/api.h
+    HINTS $ENV{RIGCONTROL_DIR}/include
+        ${PC_RIGCONTROL_INCLUDEDIR}
+    PATHS ${CMAKE_INSTALL_PREFIX}/include
+          /usr/local/include
+          /usr/include
+)
+
+FIND_LIBRARY(
+    RIGCONTROL_LIBRARIES
+    NAMES gnuradio-rigcontrol
+    HINTS $ENV{RIGCONTROL_DIR}/lib
+        ${PC_RIGCONTROL_LIBDIR}
+    PATHS ${CMAKE_INSTALL_PREFIX}/lib
+          ${CMAKE_INSTALL_PREFIX}/lib64
+          /usr/local/lib
+          /usr/local/lib64
+          /usr/lib
+          /usr/lib64
+)
+
+INCLUDE(FindPackageHandleStandardArgs)
+FIND_PACKAGE_HANDLE_STANDARD_ARGS(RIGCONTROL DEFAULT_MSG RIGCONTROL_LIBRARIES RIGCONTROL_INCLUDE_DIRS)
+MARK_AS_ADVANCED(RIGCONTROL_LIBRARIES RIGCONTROL_INCLUDE_DIRS)
+
