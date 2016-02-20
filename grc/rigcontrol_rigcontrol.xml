@@ -4,7 +4,13 @@
   <key>rigcontrol_rigcontrol</key>
   <category>Rig Control</category>
   <import>import rigcontrol</import>
-  <make>rigcontrol.rigcontrol(self.set_$freqvar(), self.get_$freqvar(), self.set_$pttvar(), self.get_$pttvar())</make>
+  <make>rigcontrol.rigcontrol(
+    self.set_$freqvar() if $freqvar in locals() else None,
+    self.get_$freqvar() if $freqvar in locals() else None,
+    $debug)</make>
+
+
+
   <!-- Make one 'param' node for every Parameter you want settable from the GUI.
        Sub-nodes:
        * name
@@ -13,16 +19,25 @@
   <param>
     <name>Frequency Variable</name>
     <key>freqvar</key>
-    <value></value>
+    <value>None</value>
     <type>string</type>
   </param>
 
+
   <param>
-    <name>PTT Variable</name>
-    <key>pttvar</key>
-    <value></value>
-    <type>string</type>
-  </param>
+		<name>Debug</name>
+		<key>debug</key>
+		<value>False</value>
+		<type>bool</type>
+		<option>
+			<name>Enable</name>
+			<key>True</key>
+		</option>
+		<option>
+			<name>Disable</name>
+			<key>False</key>
+		</option>
+	</param>
 
   <!-- Make one 'sink' node per input. Sub-nodes:
        * name (an identifier for the GUI)

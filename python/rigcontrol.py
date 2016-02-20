@@ -28,16 +28,16 @@ class rigcontrol(gr.sync_block):
     """
     docstring for block rigcontrol
     """
-    def __init__(self, freq_set, freq_get, ptt_set, ptt_get):
+    def __init__(self, freq_set, freq_get, debug):
         gr.sync_block.__init__(self, 'rigcontrol',[],[])
         self.message_port_register_in(pmt.intern('in'))
         self.message_port_register_out(pmt.intern('out'))
         self.set_msg_handler(pmt.intern('in'), self.handler)
         self.freq_set_cb = freq_set
         self.freq_get_cb = freq_get
-        self.ptt_set_cb = ptt_set
-        self.ptt_get_cb = ptt_get
-        self.debug = True
+        # self.ptt_set_cb = ptt_set
+        # self.ptt_get_cb = ptt_get
+        self.debug = debug
 
     def handler(self, rigctrl_request):
         # msg_type = pmt.to_long(pmt.tuple_ref(rds_data, 0))
@@ -62,24 +62,33 @@ class rigcontrol(gr.sync_block):
             self.send_response('RPRT 1\n')
 
     def freq_set(self, f):
-        self.debug_msg('Setting frequency to {} Hz'.format(f))
-        self.freq_set_cb(f)
-        self.send_response('RPRT 0\n')
+        if self.freq_set_cb:
+            self.debug_msg('Setting frequency to {} Hz'.format(f))
+            self.freq_set_cb(f)
+            self.send_response('RPRT 0\n')
+        else:
+            self.debug_msg('Frequency Variable Not Defined')
+            self.send_response('RPRT 0\n')
 
     def freq_get(self):
-        f = self.freq_get_cb()
-        self.debug_msg('Request for current frequency: {} Hz'.format(f))
-        self.send_response('{}\n'.format(f))
+        if self.freq_get_cb:
+            f = self.freq_get_cb()
+            self.debug_msg('Request for current frequency: {} Hz'.format(f))
+            self.send_response('{}\n'.format(f))
+        else:
+            self.debug_msg('Frequency Variable Not Defined')
+            self.send_response('{}\n'.format(0))
+            self.send_response('RPRT 0\n')
 
-    def ptt_set(self, ptt):
-        self.debug_msg('Setting PTT to {}'.format(ptt))
-        self.ptt_set_cb(ptt)
-        self.send_response('RPRT 0\n')
-
-    def ptt_get(self):
-        ptt = self.ptt_get_cb()
-        self.debug_msg('Request for current PTT: {}'.format(ptt))
-        self.send_response('t: {}\n'.format(ptt))
+    # def ptt_set(self, ptt):
+    #     self.debug_msg('Setting PTT to {}'.format(ptt))
+    #     self.ptt_set_cb(ptt)
+    #     self.send_response('RPRT 0\n')
+    #
+    # def ptt_get(self):
+    #     ptt = self.ptt_get_cb()
+    #     self.debug_msg('Request for current PTT: {}'.format(ptt))
+    #     self.send_response('t: {}\n'.format(ptt))
 
     def send_response(self, response):
         response_msg = response.strip()
